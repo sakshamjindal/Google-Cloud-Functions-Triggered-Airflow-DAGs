@@ -19,7 +19,7 @@ default_args = {
 
 BQ_PROJECT_NAME='proud-guide-296608'
 BQ_DATASET_NAME='test_dataset'
-BQ_TABLE_NAME='test_table'
+BQ_TABLE_NAME='test_table1'
 
 def get_metadata(**kwargs):
 
@@ -56,7 +56,8 @@ with airflow.DAG('composer_sample_trigger_response_dag',
         bucket= 'my-test-bucker',
         source_objects=['{{  task_instance.xcom_pull(task_ids=["get_metadata"], key="file_name")[0]  }}'],
         destination_project_dataset_table= BQ_PROJECT_NAME + "." + BQ_DATASET_NAME + "." + BQ_TABLE_NAME,
-        write_disposition='WRITE_TRUNCATE',
+        create_disposition='CREATE_IF_NEEDED',
+        # write_disposition='WRITE_TRUNCATE',
         dag=dag)
 
     # DAG Task Dependency COnfiguration
